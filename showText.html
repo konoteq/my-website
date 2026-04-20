@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<title>showText</title>
+	<style>
+		body{
+			font-family: sans-serif;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			background: #f0f2f5;
+			}
+		.card{
+			background: white;
+			padding: 2rem;
+			border-radius: 12px;
+			box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+			text-align: center;
+			}
+		.btn{
+			background: #007bff;
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 5px;
+			cursor: pointer;
+			margin-top: 10px;
+			}
+		.btn:disabled{
+			background: #ccc;
+			cursor: not-allowed;
+			}
+		#status{
+			margin-top: 15px;
+			color: black;
+			}
+	</style>
+</head>
+<body>
+	<div class="card">
+		<h2>show text</h2>
+		<p>ファイルを選択してください</p>
+		<input type="file" id="textFile" accept=".txt"><br><br>
+		<button id="processBtn" class="btn" disabled>テキストファイルを表示</button>
+		<div id="status"></div>
+	</div>
+	<script>
+		const fileInput = document.getElementById("textFile");
+		const processBtn = document.getElementById("processBtn");
+		const status = document.getElementById("status");
+		
+		fileInput.addEventListener('change',() => {
+			processBtn.disabled = !fileInput.files.length;
+		});
+		
+		processBtn.addEventListener('click',() => {
+			const file = fileInput.files[0];
+			if (!file) return;
+			const reader = new FileReader();
+			reader.addEventListener('load',() => {
+				status.innerText = reader.result;
+			});
+			if (file){
+				reader.readAsText(file);
+			}
+			processBtn.disabled = true;
+		});
+	</script>
+</body>
+</html>
